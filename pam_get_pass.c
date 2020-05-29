@@ -76,14 +76,19 @@ pam_get_pass(pam_handle_t *pamh, const char **passp, const char *prompt,
     int retval;
     const void *item = NULL;
 
+
+    if ((retval = pam_get_item(pamh, PAM_AUTHTOK, &item)) !=
+        PAM_SUCCESS)
+        return retval;
+
     /*
      * Grab the already-entered password if we might want to use it.
      */
-    if (options & (PAM_OPT_TRY_FIRST_PASS | PAM_OPT_USE_FIRST_PASS)) {
-        if ((retval = pam_get_item(pamh, PAM_AUTHTOK, &item)) !=
-            PAM_SUCCESS)
-            return retval;
-    }
+    // if (options & (PAM_OPT_TRY_FIRST_PASS | PAM_OPT_USE_FIRST_PASS)) {
+    //     if ((retval = pam_get_item(pamh, PAM_AUTHTOK, &item)) !=
+    //         PAM_SUCCESS)
+    //         return retval;
+    // }
 
     if (item == NULL) {
         /* The user hasn't entered a password yet. */
